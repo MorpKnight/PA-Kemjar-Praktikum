@@ -42,6 +42,6 @@ exports.login = async (body) => {
         address: user.rows[0].address
     };
 
-    const token = jwt.sign(dataToken, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(dataToken);
     return { success: true, message: 'User logged in successfully', token };
 }
