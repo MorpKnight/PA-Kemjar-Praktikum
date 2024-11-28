@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  csrffrontend:
+    image: csrffrontend
+    build:
+      context: Frontend
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
