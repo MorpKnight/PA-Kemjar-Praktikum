@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  insecurejwtfrontend:
+    image: insecurejwtfrontend
+    build:
+      context: Frontend
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
