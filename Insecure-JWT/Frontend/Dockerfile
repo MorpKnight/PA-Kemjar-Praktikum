@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 5173
 
 # Jalankan aplikasi menggunakan Vite dev server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev", "--host"]
