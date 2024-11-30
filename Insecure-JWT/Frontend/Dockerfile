@@ -16,8 +16,8 @@ RUN npm install --silent
 # Salin semua file aplikasi
 COPY . .
 
-# Install global dependency Vite jika diperlukan
-RUN npm install -g vite @types/vite
+# Install Vite secara global (opsional, jika diperlukan)
+RUN npm install -g vite
 
 # Build aplikasi untuk production
 RUN npm run build
