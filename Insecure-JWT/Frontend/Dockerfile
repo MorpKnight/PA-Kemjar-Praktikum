@@ -1,44 +1,23 @@
-# Gunakan image Node.js berbasis Alpine untuk ukuran lebih kecil
-FROM node:lts-alpine AS build
+# Gunakan image Node.js berbasis Alpine
+FROM node:lts-alpine
 
-# Set environment variable untuk production
-ENV NODE_ENV=production
+# Set environment variable
+ENV NODE_ENV=development
 
 # Set working directory
 WORKDIR /usr/src/app
 
-# Salin file package.json dan lock file untuk instalasi dependency
+# Salin file package.json dan package-lock.json untuk instalasi dependencies
 COPY ["package.json", "package-lock.json*", "./"]
 
-# Install dependencies
-RUN npm install --silent
+# Install dependencies, termasuk Vite
+RUN npm install --silent && npm install vite --save-dev
 
 # Salin semua file aplikasi
 COPY . .
 
-# Install Vite secara global (opsional, jika diperlukan)
-RUN npm install -g vite
+# Expose port aplikasi (default untuk Vite adalah 5173)
+EXPOSE 5173
 
-# Build aplikasi untuk production
-RUN npm run build
-
-# --- Stage kedua untuk menjalankan aplikasi ---
-FROM node:lts-alpine AS production
-
-# Set environment variable untuk production
-ENV NODE_ENV=production
-
-# Set working directory
-WORKDIR /usr/src/app
-
-# Copy build output dari stage pertama
-COPY --from=build /usr/src/app/dist ./dist
-
-# Install server untuk melayani aplikasi
-RUN npm install -g serve
-
-# Expose port untuk server
-EXPOSE 3000
-
-# Jalankan server untuk melayani build output
-CMD ["serve", "-s", "dist", "-l", "3000"]
+# Jalankan aplikasi menggunakan Vite dev server
+CMD ["npm", "run", "dev"]
