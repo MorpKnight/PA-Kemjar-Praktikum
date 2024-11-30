@@ -2,7 +2,7 @@ FROM node:lts-alpine
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
 COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --silent && npm install vite --save-dev && npm install typescript --save-dev && npm install -g serve && mv node_modules ../
+RUN npm install --silent && npm install vite --save-dev && npm install typescript --save-dev && npm install -g serve
 COPY . .
 RUN npm run build
 USER node
