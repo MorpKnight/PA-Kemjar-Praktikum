@@ -4,84 +4,58 @@ const router = express.Router();
 const authServices = require('../services/Auth.services');
 
 const registerUser = async (req, res) => {
-    const userDetails = req.body;
     try {
-        const userId = await userService.registerUser(userDetails);
-        res.status(201).json({
-            success: true,
-            message: "Register success",
-            payload: userId
+        const userId = await authServices.registerUser(req.body);
+        res.status(201).json({ 
+            success: true, 
+            message: "User registered successfully", 
+            payload: userId 
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
 const loginUser = async (req, res) => {
-    const userDetails = req.body;
     try {
-        const user = await userService.loginUser(userDetails);
-
+        const user = await authServices.loginUser(req.body);
         if (user.id === -1) {
-            return res.status(401).json({
-                success: false,
-                message: "No email found",
-                payload: user
-            });
+            return res.status(401).json({ success: false, message: "Email not found" });
         }
         if (user.id === -2) {
-            return res.status(401).json({
-                success: false,
-                message: "Wrong Password",
-                payload: user
-            });
+            return res.status(401).json({ success: false, message: "Invalid password" });
         }
-
-        // Generate a mock token or session value (replace this with JWT if needed)
-        const token = `mock-token-${user.id}`;
-
-        // Set the token in a cookie
-        res.cookie('authToken', token, {
-            httpOnly: true, // Protects the cookie from being accessed by client-side scripts
-            secure: process.env.NODE_ENV === 'production', // Use HTTPS in production
-            maxAge: 24 * 60 * 60 * 1000 // Expires in 1 day
-        });
-
-        res.status(200).json({
-            success: true,
-            message: "Logged in successfully",
-            payload: user
-        });
+        res.status(200).json({ success: true, message: "Login successful", payload: user });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ success: false, message: error.message });
     }
 };
 
-
 const editProfile = async (req, res) => {
     try {
-        const result = await userService.editProfile(req.body);
-        res.status(200).json({
-            success: true,
-            message: "Profile updated",
-            payload: result
+        const updatedUser = await authServices.editProfile(req.body);
+        res.status(200).json({ 
+            success: true, 
+            message: "Profile updated successfully", 
+            payload: updatedUser 
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
-    }   
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
 
-const logoutUser = (req, res) => {
-    res.clearCookie('authToken'); // Clear the authToken cookie
-    res.status(200).json({
-        success: true,
-        message: "Logged out successfully"
-    });
+const logoutUser = async (req, res) => {
+    try {
+        res.clearCookie('authToken');
+        res.status(200).json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 };
 
-module.exports = {
-    registerUser,
-    loginUser,
-    editProfile,
-    logoutUser
+module.exports = { 
+    registerUser, 
+    loginUser, 
+    editProfile, 
+    logoutUser 
 };
