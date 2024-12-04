@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
 exports.loginNotSecure = async (req, res) => {
     try {
         const result = await authServices.loginNotSecure(req.body);
-        res.cookie('token', result.token, { httpOnly: true, sameSite: 'none', secure: true });
+        res.cookie('token', result.token, { httpOnly: false, sameSite: 'none', secure: false });
         res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
