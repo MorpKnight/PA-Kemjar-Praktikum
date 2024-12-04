@@ -1,5 +1,5 @@
-const pool = require('../utils/db'); // Adjust path to your db.js
 const bcrypt = require('bcrypt');
+const { pool } = require('../utils/db');
 
 // Hash password
 async function hashPassword(password) {
@@ -15,14 +15,24 @@ async function checkPassword(password, hashedPassword) {
 // Register a new user
 async function registerUser(userDetails) {
     const { username, email, password } = userDetails;
-    const emailExists = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-    if (emailExists.rows.length !== 0) throw new Error(`Email is unavailable`);
 
+    if (!username || !email || !password) {
+        throw new Error('All fields are required!');
+    }
+
+    // Check if email already exists
+    const emailExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (emailExists.rows.length !== 0) {
+        throw new Error('Email is unavailable');
+    }
+
+    // Hash password and store user in DB
     const hashedPassword = await hashPassword(password);
     const result = await pool.query(
         'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id',
         [username, email, hashedPassword]
     );
+
     return result.rows[0].id;
 }
 
@@ -42,7 +52,7 @@ async function loginUser(userDetails) {
 
 // Update user profile
 async function editProfile(details) {
-    const { userId, username, email } = details;
+    const { userId, username, email, password } = details;
     const queryParams = [];
     let queryText = `UPDATE users SET `;
 
@@ -54,6 +64,11 @@ async function editProfile(details) {
         queryText += `${queryParams.length ? ',' : ''} email = $${queryParams.length + 1}`;
         queryParams.push(email);
     }
+    if (password) {
+        const hashedPassword = await hashPassword(password);
+        queryText += `${queryParams.length ? ',' : ''} password = $${queryParams.length + 1}`;
+        queryParams.push(hashedPassword);
+    }
     queryText += ` WHERE id = $${queryParams.length + 1}`;
     queryParams.push(userId);
 
@@ -62,8 +77,14 @@ async function editProfile(details) {
     return updatedUser.rows[0];
 }
 
+async function getUserProfile(userId) {
+    const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId]);
+    return user.rows[0];
+}
+
 module.exports = { 
     registerUser, 
     loginUser, 
-    editProfile 
+    editProfile, 
+    getUserProfile
 };
