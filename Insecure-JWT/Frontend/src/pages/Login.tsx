@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     try {
       const endpoint = submitType === 'login' ? '/auth/login-not-secure' : '/auth/login-secure';
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}${endpoint}`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "https://personal-insecure-jwt-be.dzlfwq.easypanel.host"}${endpoint}`, {
         email,
         password,
       });

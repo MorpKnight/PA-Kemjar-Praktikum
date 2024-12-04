@@ -18,7 +18,7 @@ export default function Dashboard() {
   const handleDecodeToken = async () => {
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/auth/decode`,
+        `${import.meta.env.VITE_BACKEND_URL || "https://personal-insecure-jwt-be.dzlfwq.easypanel.host"}/auth/decode`,
         { secret },
         { headers: { cookies: `token=${token}` } }
       );
