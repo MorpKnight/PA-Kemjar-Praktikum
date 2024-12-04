@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Register = () => {
+const ProfileUpdate = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -14,63 +14,60 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
-        method: 'POST',
+      const response = await fetch('http://localhost:5000/auth/update', {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include', // Include cookies
       });
 
       const data = await response.json();
       if (data.success) {
-        alert('Registration successful!');
-        window.location.href = '/login'; // Redirect to Login on success
+        alert('Profile updated successfully!');
       } else {
-        alert(`Registration failed: ${data.message}`);
+        alert(`Failed to update profile: ${data.message}`);
       }
     } catch (error) {
-      alert('An error occurred during registration.');
+      alert('An error occurred while updating your profile.');
     }
   };
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Register</h2>
+      <h2 className="text-2xl font-bold mb-4">Update Profile</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           name="username"
-          placeholder="Username"
+          placeholder="New Username"
           value={formData.username}
           onChange={handleInputChange}
           className="block w-full border p-2"
-          required
         />
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="New Email"
           value={formData.email}
           onChange={handleInputChange}
           className="block w-full border p-2"
-          required
         />
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="New Password"
           value={formData.password}
           onChange={handleInputChange}
           className="block w-full border p-2"
-          required
         />
         <button type="submit" className="bg-blue-600 text-white px-4 py-2">
-          Register
+          Update
         </button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default ProfileUpdate;
