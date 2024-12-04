@@ -44,6 +44,7 @@ exports.loginNotSecure = async (body) => {
     };
 
     const token = jwt.sign(dataToken, 'secret', { expiresIn: '1h' });
+    console.log(token);
     return { success: true, message: 'User logged in successfully', token };
 }
 
@@ -68,6 +69,7 @@ exports.loginSecure = async (body) => {
     };
 
     const token = jwt.sign(dataToken, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log(token);
     return { success: true, message: 'User logged in successfully', token };
 }
 
