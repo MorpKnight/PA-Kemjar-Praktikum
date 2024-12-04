@@ -28,7 +28,7 @@ export default function Register() {
     setGender(gender.toLowerCase());
     console.log(user);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/register`, user, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "https://personal-insecure-jwt-be.dzlfwq.easypanel.host"}/auth/register`, user, {
         headers: {
           'Content-Type': 'application/json',
         },
