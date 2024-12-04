@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/404';
+import TokenEditor from './pages/TokenEditor';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/token-editor" element={<TokenEditor />} />
         <Route path="/" element={
           <div className="flex h-screen items-center justify-center">
             <div className="flex flex-col items-center gap-16">
