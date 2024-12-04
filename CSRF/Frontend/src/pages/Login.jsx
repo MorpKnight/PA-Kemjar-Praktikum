@@ -13,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch('http://localhost:5000/auth/login', {
+        const response = await fetch('http://localhost:5050/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
@@ -22,6 +22,7 @@ const Login = () => {
 
         const data = await response.json();
         if (data.success) {
+            localStorage.setItem('authToken', data.token); // Save token to localStorage
             alert('Login successful!');
             window.location.href = '/profile'; // Redirect to Profile on success
         } else {

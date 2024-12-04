@@ -49,6 +49,7 @@ const loginUser = async (req, res) => {
 
 const editProfile = async (req, res) => {
     try {
+        console.log(req.body);
         // Extract authToken from cookies
         const authToken = req.cookies.authToken;
         if (!authToken) {
@@ -100,7 +101,7 @@ const logoutUser = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
     try {
-        console.log("Hey") ;
+        //console.log("Hey") ;
         // Extract authToken from cookies
         const authToken = req.cookies.authToken;
         if (!authToken) {

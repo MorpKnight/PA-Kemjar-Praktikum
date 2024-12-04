@@ -14,7 +14,7 @@ const ProfileUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/auth/update', {
+      const response = await fetch('http://localhost:5050/auth/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
