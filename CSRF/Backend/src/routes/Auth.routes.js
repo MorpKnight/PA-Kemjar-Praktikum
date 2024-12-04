@@ -4,7 +4,7 @@ const authControllers = require('../controllers/Auth.controllers'); // Adjust th
 
 router.post('/register', authControllers.registerUser);
 router.post('/login', authControllers.loginUser);
-router.put('/update', authControllers.editProfile);
+router.post('/update', authControllers.editProfile);
 router.get('/profile', authControllers.getUserProfile);
 
 module.exports = router;
